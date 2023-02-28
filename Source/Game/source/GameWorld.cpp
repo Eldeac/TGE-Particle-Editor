@@ -68,6 +68,7 @@ GameWorld::GameWorld()
 	p.initialVelocity = Tga::Vector2f(0.f, 5.f);
 	p.deltaVelocity = Tga::Vector2f(0.f, -25.f);
 	p.randomVelocity = Tga::Vector2f(10.f, 7.5f);
+	p.randomPosition = Tga::Vector2f(50, 50);
 	p.startSize = Tga::Vector2f(1.f, 1.f);
 	p.endSize = Tga::Vector2f(0.25f, .25f);
 	p.startColor = Tga::Color(1.f, 0.93333333333f, 0.67450980392f, 0.5f);
@@ -142,7 +143,7 @@ void GameWorld::Update(float aTimeDelta)
 	if (openLoad && !openSave)
 		LoadParticleSystem();
 
-	ImGui::Begin("Particle Editor", &openWindow, ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar | ImGuiWindowFlags_::ImGuiWindowFlags_NoResize);
+	ImGui::Begin("Particle Editor", &openWindow, ImGuiWindowFlags_::ImGuiWindowFlags_MenuBar);
 
 	if (ImGui::BeginMenuBar())
 	{
@@ -181,6 +182,7 @@ void GameWorld::Update(float aTimeDelta)
 	ImGuiExtra::InputVec2("Initial Velocity", p.initialVelocity);
 	ImGuiExtra::InputVec2("Delta Velocity", p.deltaVelocity);
 	ImGuiExtra::InputVec2("Random Velocity", p.randomVelocity);
+	ImGuiExtra::InputVec2("Random Position", p.randomPosition);
 
 	ImGui::Spacing();
 	ImGui::Spacing();
@@ -254,6 +256,11 @@ void GameWorld::SaveParticleSystem()
 						{"y", p.randomVelocity.y}
 					}
 				},
+				{"rp", { // Random position
+						{"x", p.randomPosition.x},
+						{"y", p.randomPosition.y}
+					}
+				},
 				{"ss", { // Start size
 						{"x", p.startSize.x},
 						{"y", p.startSize.y}
@@ -315,6 +322,7 @@ void GameWorld::LoadParticleSystem()
 		p.initialVelocity = Tga::Vector2f(j["iv"]["x"], j["iv"]["y"]);
 		p.deltaVelocity = Tga::Vector2f(j["dv"]["x"], j["dv"]["y"]);
 		p.randomVelocity = Tga::Vector2f(j["rv"]["x"], j["rv"]["y"]);
+		p.randomPosition = Tga::Vector2f(j["rp"]["x"], j["rp"]["y"]);
 		p.startSize = Tga::Vector2f(j["ss"]["x"], j["ss"]["y"]);
 		p.endSize = Tga::Vector2f(j["es"]["x"], j["es"]["y"]);
 		p.startColor = Tga::Color(j["sc"]["r"], j["sc"]["g"], j["sc"]["b"], j["sc"]["a"]);

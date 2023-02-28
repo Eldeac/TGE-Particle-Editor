@@ -4,6 +4,12 @@
 #include <limits>
 #include <algorithm>
 
+// Random float btween -1 and 1
+#define RANDOM_FLOAT (static_cast<float>(ourDistr(ourRandom)) / static_cast<float>((std::numeric_limits<uint32_t>::max)()) * 2.f - 1.f)
+//																				    Numeric limit max call needs to have parentheses
+//																				    because the compiler confuses it with the max macro.
+//																				    Very fun!
+
 std::uniform_int_distribution<std::mt19937::result_type> ParticleSystem::ourDistr;
 std::mt19937 ParticleSystem::ourRandom;
 
@@ -88,6 +94,8 @@ void ParticleSystem::Emit(const ParticleInstance& aData)
 	next.active = true;
 
 	next.instance.myPosition = myPosition;
+	next.instance.myPosition.x += aData.randomPosition.x * RANDOM_FLOAT;
+	next.instance.myPosition.y += aData.randomPosition.y * RANDOM_FLOAT;
 	next.instance.myColor = aData.startColor;
 	next.instance.mySize = mySpriteSize * aData.startSize;
 	
@@ -100,11 +108,8 @@ void ParticleSystem::Emit(const ParticleInstance& aData)
 	next.startSize = aData.startSize;
 	next.endSize = aData.endSize;
 
-	//																												Numeric limit max call needs to have parentheses
-	//																												because the compiler confuses it with the max macro.
-	//																												Very fun!
-	next.randomVelocity.x = (aData.randomVelocity.x * ourDataScaleFactor) * (static_cast<float>(ourDistr(ourRandom)) / static_cast<float>((std::numeric_limits<uint32_t>::max)()) * 2.f - 1.f);
-	next.randomVelocity.y = (aData.randomVelocity.y * ourDataScaleFactor) * (static_cast<float>(ourDistr(ourRandom)) / static_cast<float>((std::numeric_limits<uint32_t>::max)()) * 2.f - 1.f);
+	next.randomVelocity.x = (aData.randomVelocity.x * ourDataScaleFactor) * RANDOM_FLOAT;
+	next.randomVelocity.y = (aData.randomVelocity.y * ourDataScaleFactor) * RANDOM_FLOAT;
 
 	next.startColor = aData.startColor;
 	next.endColor = aData.endColor;

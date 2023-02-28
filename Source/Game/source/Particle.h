@@ -5,7 +5,7 @@
 struct ParticleInstance
 {
 	float lifetime;
-	Tga::Vector2f initialVelocity, deltaVelocity, randomVelocity;
+	Tga::Vector2f initialVelocity, deltaVelocity, randomVelocity, randomPosition;
 	Tga::Vector2f startSize, endSize;
 	Tga::Color startColor, endColor;
 };
